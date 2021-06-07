@@ -1,0 +1,7 @@
+include musiccharts/__init__.py
+include musiccharts/cli.py
+include musiccharts/data_definitions.py
+include musiccharts/data_processing.py
+include musiccharts/read_file.py
+include README.md
+include setup.py
