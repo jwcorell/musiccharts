@@ -57,7 +57,9 @@ def format_line(line, line_num, key, debug=False):
     # Format title
     title_matches = vars.TITLE_REGEX.findall(line)
     if len(title_matches) > 0:
-        line = r"{\bigtitle{" + title_matches[0][1] + "}}" + title_matches[0][3]
+        line = (
+            r"\underline{\bigtitle{" + title_matches[0][1] + "}}" + title_matches[0][3]
+        )
 
     # Add bold for verse/chorus labels
     label_matches = vars.LABEL_REGEX.findall(line)
