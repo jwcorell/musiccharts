@@ -126,20 +126,6 @@ def format_line(line, line_num, key, next_line_after_intro, debug=False):
                         item[i] = f"{splits[0]}/{translation}"
                     count = len(item[i].replace("△", "")) - remove_partial_space
                     spacing = count * " "
-                    if len(translation) > len(splits[1]):
-                        print(
-                            f"{item}",
-                            {len(translation)},
-                            {len(splits[1])},
-                            {len(item[i].replace("△", ""))},
-                            {count},
-                            {remove_partial_space},
-                        )
-                    # print(f"item[i]: {item[i]}")
-                    # print(f'len(item[i].replace("△", "")): {len(item[i].replace("△", ""))}')
-                    # print(f"remove_partial_space: {remove_partial_space}")
-                    # print(f"count: {count}")
-                    # print(f"[spacing]: {[spacing]}")
                     edited_chord += r"\ts{" + item[i] + r"{\thin" + spacing + "}}"
             else:
                 edited_chord += item[i]
