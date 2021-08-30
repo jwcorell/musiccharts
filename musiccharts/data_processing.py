@@ -30,7 +30,7 @@ def validate_keys(keys):
         sys.exit(1)
 
 
-def format_line(line, line_num, key, debug=False):
+def format_line(line, line_num, key, next_line_after_intro, debug=False):
     """
     Input a line of text and process any of the following:
       - NNS chord notation. symbols get superscripted, plus whitespace adjustment
@@ -41,6 +41,7 @@ def format_line(line, line_num, key, debug=False):
         line: single line of text containing mixed lyrics, labels, chords
         line_num: used only for outputting chord syntax errors
         key: which key to transpose into
+        next_line_after_intro: boolean, whether previous line was the intro
         debug: enable debug mode to print text lines pre/post changes
 
     Returns:
@@ -51,8 +52,13 @@ def format_line(line, line_num, key, debug=False):
 
     # Format intro in the title line
     intro_matches = vars.INTRO_REGEX.findall(line)
+    intro_line = False
     for item in intro_matches:
-        line = line.replace(item, r"\hfill{\textbf{" + item + "}}")
+        intro_line = True
+        if len(re.findall(r"^Intro", line)) > 0:
+            line = line.replace(item, r"\textbf{" + item + "}")
+        else:
+            line = line.replace(item, r"\hfill{\textbf{" + item + "}}")
 
     # Format title
     title_matches = vars.TITLE_REGEX.findall(line)
@@ -101,6 +107,7 @@ def format_line(line, line_num, key, debug=False):
                 if item[i] not in ["", " ", "\n"]:
                     # Check for invalid chord inversions
                     # Example: 1/3, 1sus/3 are a valid chord3, 1/34 1/sus3 are not
+                    splits = ["test", "test"]
                     if "/" in item[i]:
                         splits = item[i].split("/")
                         if (
@@ -113,15 +120,30 @@ def format_line(line, line_num, key, debug=False):
                             )
                             continue
                         translation = vars.CHORDS[key][splits[1]]
+                        # With scaling superscript pads to 0.333, 4 space pad = 1 full space char
                         if len(translation) > len(splits[1]):
                             remove_full_space += 1
                         item[i] = f"{splits[0]}/{translation}"
                     count = len(item[i].replace("△", "")) - remove_partial_space
                     spacing = count * " "
+                    if len(translation) > len(splits[1]):
+                        print(
+                            f"{item}",
+                            {len(translation)},
+                            {len(splits[1])},
+                            {len(item[i].replace("△", ""))},
+                            {count},
+                            {remove_partial_space},
+                        )
+                    # print(f"item[i]: {item[i]}")
+                    # print(f'len(item[i].replace("△", "")): {len(item[i].replace("△", ""))}')
+                    # print(f"remove_partial_space: {remove_partial_space}")
+                    # print(f"count: {count}")
+                    # print(f"[spacing]: {[spacing]}")
                     edited_chord += r"\ts{" + item[i] + r"{\thin" + spacing + "}}"
             else:
                 edited_chord += item[i]
-        if remove_full_space == 1:
+        if remove_full_space == 1 and not intro_line and not next_line_after_intro:
             original_chord = f"{original_chord} "
         if (original_chord, edited_chord) not in chords:
             chords.append((original_chord, edited_chord))
@@ -133,7 +155,11 @@ def format_line(line, line_num, key, debug=False):
     if debug:
         print(f"POST: {line}")
 
-    return {"edits": NoEscape(line), "errors": chord_errors}
+    return {
+        "next_line_after_intro": intro_line,
+        "edits": NoEscape(line),
+        "errors": chord_errors,
+    }
 
 
 def process_document(dest_filename, path, file_contents, font_size, keep_tex):

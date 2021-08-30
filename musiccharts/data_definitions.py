@@ -40,7 +40,9 @@ TITLE_FONT = "Futura"
 CHORD_REGEX1 = re.compile(r"(^|\n| )([#b]?)(\d)([0-9susb#+-oø△/]*)( |$|\n|\))")
 CHORD_REGEX2 = re.compile(r"/([#b]?)([0-9])( |$|\n|\))")
 CHORD_REGEX3 = re.compile(r"/([#b]?)([8-9])( |$|\n|\))")
-INTRO_REGEX = re.compile(r"(?:Intro|Intro/Interlude|Intro/Outro):")
+INTRO_REGEX = re.compile(
+    r"(?:Intro|Intro/Interlude|Intro/Outro|Intro/Interlude/Outro):"
+)
 LABEL_REGEX = re.compile(
     r"(?:Bridge|Chorus|Interlude|Outro|Prechorus|Tag|Verse|Ending)\s?[0-9]?:"
 )

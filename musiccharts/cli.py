@@ -94,8 +94,16 @@ def main():
         formatted_lines = []
         chord_errors = []
         i = 0
+        next_line_after_intro = False
         for line in file_contents:
-            results = format_line(line=line, line_num=i, key=key, debug=False)
+            results = format_line(
+                line=line,
+                line_num=i,
+                key=key,
+                next_line_after_intro=next_line_after_intro,
+                debug=False,
+            )
+            next_line_after_intro = results.get("next_line_after_intro")
             formatted_lines.append(results.get("edits"))
             chord_errors.extend(results.get("errors"))
             i += 1
