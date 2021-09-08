@@ -89,10 +89,8 @@ def format_line(line, line_num, key, next_line_after_intro, debug=False):
             if i == 1:
                 if key == "NNS":
                     if item[i] not in ["", " ", "\n"]:
-                        spacing = (not intro_line) * (
-                            "{\thin" + len(item[i].replace("△", "")) * " " + "}"
-                        )
-                        edited_chord += r"\ts{" + spacing + item[i] + "}"
+                        spacing = len(item[i].replace("△", "")) * " "
+                        edited_chord += r"\ts{{\thin" + spacing + "}" + item[i] + "}"
                 else:
                     translation = vars.CHORDS[key][f"{item[1]}{item[2]}"]
                     if len(translation) > 1:
@@ -109,6 +107,7 @@ def format_line(line, line_num, key, next_line_after_intro, debug=False):
                 if item[i] not in ["", " ", "\n"]:
                     # Check for invalid chord inversions
                     # Example: 1/3, 1sus/3 are a valid chord3, 1/34 1/sus3 are not
+                    splits = ["test", "test"]
                     if "/" in item[i]:
                         splits = item[i].split("/")
                         if (
@@ -126,12 +125,12 @@ def format_line(line, line_num, key, next_line_after_intro, debug=False):
                             remove_full_space += 1
                         item[i] = f"{splits[0]}/{translation}"
                     count = len(item[i].replace("△", "")) - remove_partial_space
-                    spacing = (not intro_line) * (r"{\thin" + count * " " + "}")
-                    edited_chord += r"\ts{" + item[i] + spacing + "}"
+                    spacing = count * " "
+                    edited_chord += r"\ts{" + item[i] + r"{\thin" + spacing + "}}"
             else:
                 edited_chord += item[i]
-        if remove_full_space > 0 and not intro_line and not next_line_after_intro:
-            original_chord = f"{original_chord}" + " " * remove_full_space
+        if remove_full_space == 1 and not intro_line and not next_line_after_intro:
+            original_chord = f"{original_chord} "
         if (original_chord, edited_chord) not in chords:
             chords.append((original_chord, edited_chord))
 
