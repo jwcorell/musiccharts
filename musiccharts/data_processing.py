@@ -137,7 +137,7 @@ def format_line(line, line_num, key, next_line_after_intro, debug=False):
 
     # Replace raw chords with LaTeX-formatted chords
     for chord in chords:
-        line = f"{line} ".replace(chord[0], chord[1]).rstrip()
+        line = f"{line}  ".replace(chord[0], chord[1]).rstrip()
 
     if debug:
         print(f"POST: {line}")
