@@ -55,7 +55,7 @@ def format_line(line, line_num, key, next_line_after_intro, debug=False):
     intro_line = False
     for item in intro_matches:
         intro_line = True
-        if len(re.findall(r"^Intro", line)) > 0:
+        if len(re.findall(r"^INTRO", line)) > 0:
             line = line.replace(item, r"\textbf{" + item + "}")
         else:
             line = line.replace(item, r"\hfill{\textbf{" + item + "}}")
