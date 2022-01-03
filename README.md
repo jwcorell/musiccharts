@@ -52,4 +52,4 @@ o   = full-diminished 7th
 ### Feedback
 * This tool is in alpha with fairly limited testing so far
 * Feedback, bug fixes, or improvements are welcomed
-* Please submit an Issue via GitHub, drop an email to github@jamesw.us
+* Please submit an Issue via GitHub or drop an email to github@jamesw.us
